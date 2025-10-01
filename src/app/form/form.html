@@ -87,6 +87,7 @@
           name="framework"
           ngModel
           required
+          #framework="ngModel"
           [value]="selectedFramework()"
           (selectionChange)="selectedFramework.set($event.value)"
         >
@@ -99,9 +100,9 @@
       </mat-form-field>
 
       <div class="form-error">
-        @if (lastname.invalid && (lastname.dirty || lastname.touched)) {
+        @if (framework.invalid && (framework.dirty || framework.touched)) {
           <div class="alert">
-            @if (lastname.hasError('required')) {
+            @if (framework.hasError('required')) {
               <div>This field is required.</div>
             }
           </div>
@@ -127,6 +128,14 @@
             }
           </div>
         }
+      </div>
+
+      <div class="form-error">
+        <div class="alert">
+          <div>
+            {{ selectedFramework() === ETechnologyNames.DEFAULT ? 'First select framework' : '' }}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -220,7 +229,7 @@
       </div>
     </div>
     <div class="submit-button">
-      <button type="submit" [disabled]="hobbies().length <= 0">
+      <button type="submit" [disabled]="hobbies().length <= 0 || !form.valid">
         {{ isLoading() ? 'Loading' : 'Submit' }}
       </button>
     </div>
