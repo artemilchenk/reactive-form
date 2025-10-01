@@ -1,0 +1,31 @@
+:host {
+  .form-container {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .form-field {
+      width: 100%;
+    }
+
+    .form-group-control {
+      .add-hobby {
+        display: flex;
+        justify-content: center;
+      }
+    }
+    .submit-button {
+      display: flex;
+      justify-content: center;
+      padding-top: 20px;
+    }
+
+    .form-error {
+      color: darkred;
+    }
+  }
+
+  .success {
+    color: darkcyan;
+  }
+}

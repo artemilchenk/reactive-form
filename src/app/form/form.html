@@ -1,0 +1,238 @@
+<div class="form-container">
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
+    <div class="form-control">
+      <mat-form-field class="form-field">
+        <mat-label>First name</mat-label>
+        <input
+          matInput
+          type="text"
+          id="firstname"
+          name="firstname"
+          class="form-control"
+          required
+          ngModel
+          #firstname="ngModel"
+        />
+      </mat-form-field>
+
+      <div class="form-error">
+        @if (firstname.invalid && (firstname.dirty || firstname.touched)) {
+          <div class="alert">
+            @if (firstname.hasError('required')) {
+              <div>This field is required.</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-control">
+      <mat-form-field class="form-field">
+        <mat-label>Last Name</mat-label>
+        <input
+          matInput
+          type="text"
+          id="lastname"
+          name="lastname"
+          class="form-control"
+          required
+          ngModel
+          #lastname="ngModel"
+        />
+      </mat-form-field>
+
+      <div class="form-error">
+        @if (lastname.invalid && (lastname.dirty || lastname.touched)) {
+          <div class="alert">
+            @if (lastname.hasError('required')) {
+              <div>This field is required.</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-control">
+      <mat-form-field class="form-field">
+        <mat-label>Date of birth</mat-label>
+        <input
+          matInput
+          name="dateOfBirth"
+          #dateOfBirth="ngModel"
+          ngModel
+          [max]="today"
+          [matDatepicker]="dp3"
+          required
+          readonly
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+        <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+      </mat-form-field>
+
+      <div class="form-error">
+        @if (dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)) {
+          <div class="alert">
+            @if (dateOfBirth.hasError('required')) {
+              <div>This field is required.</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-control">
+      <mat-form-field class="form-field">
+        <mat-label>Chose Framework</mat-label>
+        <mat-select
+          name="framework"
+          ngModel
+          required
+          [value]="selectedFramework()"
+          (selectionChange)="selectedFramework.set($event.value)"
+        >
+          @for (item of technologies | keyvalue; track item.key) {
+            @if (item.key !== ETechnologyNames.DEFAULT) {
+              <mat-option [value]="item.key">{{ item.value.title }}</mat-option>
+            }
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <div class="form-error">
+        @if (lastname.invalid && (lastname.dirty || lastname.touched)) {
+          <div class="alert">
+            @if (lastname.hasError('required')) {
+              <div>This field is required.</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-control">
+      <mat-form-field class="form-field">
+        <mat-label>Chose version</mat-label>
+        <mat-select name="frameworkVersion" #frameworkVersion="ngModel" ngModel required>
+          @for (item of currentVersions().values; track item) {
+            <mat-option [value]="item">{{ item }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <div class="form-error">
+        @if (frameworkVersion.invalid && (frameworkVersion.dirty || frameworkVersion.touched)) {
+          <div class="alert">
+            @if (frameworkVersion.hasError('required')) {
+              <div>This field is required.</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-control">
+      <mat-form-field class="form-field">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="text"
+          id="email"
+          name="email"
+          class="form-control"
+          required
+          ngModel
+          #email="ngModel"
+          email
+        />
+      </mat-form-field>
+
+      <div class="form-error">
+        @if (email.invalid && (email.dirty || email.touched)) {
+          <div class="alert">
+            @if (email.hasError('required')) {
+              <div>This field is required.</div>
+            }
+            @if (email.hasError('email')) {
+              <div>Email is not valid.</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div ngModelGroup="hobbies" #hobby="ngModelGroup" class="form-group-control">
+      <div class="form-control">
+        <mat-form-field class="form-field">
+          <mat-label>Hobby Name</mat-label>
+          <input
+            matInput
+            name="name"
+            [ngModel]="hobbyName()"
+            (ngModelChange)="hobbyName.set($event)"
+            ngModel
+          />
+        </mat-form-field>
+
+        <div class="form-control">
+          <mat-form-field class="form-field">
+            <mat-label>Duration</mat-label>
+            <input
+              matInput
+              name="duration"
+              [ngModel]="hobbyDuration()"
+              (ngModelChange)="hobbyDuration.set($event)"
+              ngModel
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="form-error">
+          <div class="form-error">
+            <div class="alert">
+              @if (hobbies().length <= 0) {
+                <div>At least one hobby</div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div>
+          @if (hobbies().length) {
+            Hobbies:
+          }
+
+          @for (item of hobbies(); track item; let i = $index) {
+            <span> {{ item.name }} {{ i < hobbies().length - 1 ? ',' : '' }} </span>
+          }
+        </div>
+
+        <div class="add-hobby">
+          <button
+            [disabled]="!hobbyName().trim() || !hobbyDuration().trim()"
+            mat-raised-button
+            class="add-hobby-button"
+            type="button"
+            (click)="addHobby(hobby)"
+          >
+            Add Hobby
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="submit-button">
+      <button type="submit" [disabled]="hobbies().length <= 0">
+        {{ isLoading() ? 'Loading' : 'Submit' }}
+      </button>
+    </div>
+
+    <div class="form-error">
+      <div class="alert">
+        <div>{{ errorResponse() ? errorResponse() : '' }}</div>
+      </div>
+
+      <div class="success">
+        <div>{{ responseData() ? 'Form is sent!' : '' }}</div>
+      </div>
+    </div>
+  </form>
+</div>
